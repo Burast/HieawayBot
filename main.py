@@ -1,10 +1,9 @@
 import telebot
-from token import bottoken
 from telebot import types
 from signup import *
 from keyboards import *
 
-bot = telebot.TeleBot(bottoken)
+bot = telebot.TeleBot('1602726260:AAEDcaEPtwmpVUcCpSOx8MN37-zgVg054gc')
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):

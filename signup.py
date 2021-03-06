@@ -1,8 +1,8 @@
 import telebot
 import sqlite3
-from token import bottoken
+from keyboards import mainboard
 
-bot = telebot.TeleBot(bottoken)
+bot = telebot.TeleBot('1602726260:AAEDcaEPtwmpVUcCpSOx8MN37-zgVg054gc')
 
 def playercheck(uid):
     con=sqlite3.connect('rating.db')
@@ -18,7 +18,9 @@ def reg_step(message):
     UserInfo=bot.get_chat_member(nid, nid).user
     cur.execute("INSERT INTO players VALUES(?, ?, ?)", (nid, UserInfo.first_name, message.text))
     conn.commit()
-    bot.send_message(nid, "ok")
-    cur.execute("SELECT * FROM players WHERE telegramid=?", (nid+1, ))
+    cur.execute("SELECT rowid FROM players WHERE telegramid=?", (nid,))
+    rowid = cur.fetchone()
+    bot.send_message(nid, "Успешная регистрация, ваш номер: "+str(rowid[0])+'\n Он нужен для регистрации ваших партий. \n го можно будет посмотреть в профиле.' , reply_markup=mainboard)
+    cur.execute("SELECT * FROM players WHERE telegramid=?", (nid, ))
     print(cur.fetchone())
 
