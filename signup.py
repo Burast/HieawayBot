@@ -8,7 +8,7 @@ def playercheck(uid):
     con=sqlite3.connect('rating.db')
     cursor=con.cursor()
     cursor.execute("SELECT * FROM players WHERE telegramid=?", (uid, ))
-    return True if cursor.fetchone()==None else False
+    return False if cursor.fetchone()==None else True
         
 
 def reg_step(message):
@@ -16,7 +16,7 @@ def reg_step(message):
     cur=conn.cursor()
     nid = message.from_user.id
     UserInfo=bot.get_chat_member(nid, nid).user
-    cur.execute("INSERT INTO players VALUES(?, ?, ?)", (nid, UserInfo.first_name, message.text))
+    cur.execute("INSERT INTO players(telegramid, telegramnick, gamename) VALUES(?, ?, ?)", (nid, UserInfo.first_name, message.text))
     conn.commit()
     cur.execute("SELECT rowid FROM players WHERE telegramid=?", (nid,))
     rowid = cur.fetchone()
